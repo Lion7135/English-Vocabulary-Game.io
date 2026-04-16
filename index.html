@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Flashcards Game</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-language"></i> English Vocabulary Game</h1>
+            <p class="subtitle">Learn and memorize English words with flashcards</p>
+        </header>
+
+        <main>
+            <div class="menu-screen" id="menuScreen">
+                <div class="instructions">
+                    <h3><i class="fas fa-info-circle"></i> How to Play</h3>
+                    <ul>
+                        <li><strong>Practice Mode:</strong> Choose from 4 options, no time limit.</li>
+                        <li><strong>Typing Mode:</strong> See Russian word, type the English translation.</li>
+                        <li><strong>Levels 1-3:</strong> Choose correct answer before time runs out.</li>
+                        <li>Correct answer: <strong class="text-success">+10 points</strong>, wrong: 0 points.</li>
+                        <li>After the game, click <strong>"Show My Mistakes"</strong> to review errors.</li>
+                        <li>Create your own decks with custom words!</li>
+                    </ul>
+                </div>
+                
+                <div class="create-deck-section">
+                    <button id="createNewDeckBtn" class="btn-create-deck">
+                        <i class="fas fa-plus-circle"></i> + Create New Deck
+                    </button>
+                </div>
+                
+                <div class="deck-selection">
+                    <h3><i class="fas fa-layer-group"></i> Select Word Deck</h3>
+                    <div class="deck-options" id="deckOptions">
+                        <button class="deck-btn active" data-deck="random30">
+                            <i class="fas fa-random"></i> Random Cards (30)
+                        </button>
+                        <button class="deck-btn" data-deck="all">
+                            <i class="fas fa-globe"></i> All Words
+                        </button>
+                        <button class="deck-btn" data-deck="unit1">
+                            <i class="fas fa-book"></i> Unit 1
+                        </button>
+                        <button class="deck-btn" data-deck="unit2">
+                            <i class="fas fa-book"></i> Unit 2
+                        </button>
+                        <button class="deck-btn" data-deck="unit3">
+                            <i class="fas fa-book"></i> Unit 3
+                        </button>
+                        <button class="deck-btn" data-deck="unit4">
+                            <i class="fas fa-book"></i> Unit 4
+                        </button>
+                        <button class="deck-btn" data-deck="unit5">
+                            <i class="fas fa-book"></i> Unit 5
+                        </button>
+                        <button class="deck-btn" data-deck="unit6">
+                            <i class="fas fa-book"></i> Unit 6
+                        </button>
+                        <button class="deck-btn" data-deck="unit7">
+                            <i class="fas fa-book"></i> Unit 7
+                        </button>
+                        <button class="deck-btn" data-deck="unit8">
+                            <i class="fas fa-book"></i> Unit 8
+                        </button>
+                        <button class="deck-btn" data-deck="unit9">
+                            <i class="fas fa-book"></i> Unit 9
+                        </button>
+                        <button class="deck-btn" data-deck="unit10">
+                            <i class="fas fa-book"></i> Unit 10
+                        </button>
+                    </div>
+
+                    <div class="custom-decks-section" id="customDecksSection">
+                        <h3><i class="fas fa-user-plus"></i> My Decks</h3>
+                        <div id="customDecksList" class="custom-decks-list">
+                        </div>
+                    </div>
+                    
+                    <div class="custom-deck-controls" id="customDeckControls">
+                        <button id="refreshRandomBtn" class="btn-custom">
+                            <i class="fas fa-redo"></i> Refresh Random Deck
+                        </button>
+                        <button id="globalExportBtn" class="btn-custom">
+                            <i class="fas fa-download"></i> Export All Decks
+                        </button>
+                        <button id="globalImportBtn" class="btn-custom">
+                            <i class="fas fa-upload"></i> Import Decks
+                        </button>
+                    </div>
+                </div>
+                <h2>Choose a Mode</h2>
+
+                <button id="practiceBtn" class="btn btn-practice">
+                    <i class="fas fa-book-open"></i> Practice Mode (No Timer)
+                </button>
+                <button id="typingModeBtn" class="btn btn-typing">
+                    <i class="fas fa-keyboard"></i> Typing Mode: Russian → English
+                </button>
+                <button id="level1Btn" class="btn btn-level">
+                    <i class="fas fa-play"></i> Level 1: 30 seconds per card
+                </button>
+                <button id="level2Btn" class="btn btn-level">
+                    <i class="fas fa-bolt"></i> Level 2: 15 seconds per card
+                </button>
+                <button id="level3Btn" class="btn btn-level">
+                    <i class="fas fa-fire"></i> Level 3: 5 seconds per card
+                </button>
+            </div>
+
+
+            <div class="game-screen hidden" id="gameScreen">
+                <div class="game-header">
+                    <div class="stats">
+                        <span id="scoreDisplay">Score: 0</span>
+                        <span id="timerDisplay">Time: --</span>
+                        <span id="progressDisplay">Card: 0/0</span>
+                    </div>
+                    <div>
+                        <button id="showMistakesInGameBtn" class="btn-mistakes-small hidden">
+                            <i class="fas fa-eye"></i> Mistakes (0)
+                        </button>
+                        <button id="quitBtn" class="btn-quit"><i class="fas fa-sign-out-alt"></i> Quit</button>
+                    </div>
+                </div>
+
+                <div class="flashcard">
+                    <div class="card-header">
+                        <button id="speakBtn" class="btn-speak">
+                            <i class="fas fa-volume-up"></i> Speak Word
+                        </button>
+                        <h3 id="englishWord">Word</h3>
+                    </div>
+                    <div class="card-content">
+                        <p class="part-of-speech" id="partOfSpeech">n.</p>
+                        <p class="pronunciation" id="pronunciation">/ˈɡɪvən neɪm/</p>
+                    </div>
+
+                    <div class="options" id="optionsContainer"></div>
+
+                    <div class="feedback hidden" id="feedback">
+                        <p id="correctAnswerText"></p>
+                        <button id="nextBtn" class="btn-next">Next Card <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-screen hidden" id="resultScreen">
+                <h2>Game Over!</h2>
+                <div class="score-summary" id="scoreSummary"></div>
+                
+                <button id="showMistakesBtn" class="btn-mistakes">
+                    <i class="fas fa-eye"></i> Show My Mistakes
+                </button>
+                
+                <button id="restartBtn" class="btn-restart">
+                    <i class="fas fa-redo"></i> Play Again
+                </button>
+                <button id="backToMenuBtn" class="btn-menu">
+                    <i class="fas fa-home"></i> Back to Menu
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <p>Speakout Advanced Words. Learn And Make Your Own Fleshcards.</p>
+        </footer>
+    </div>
+
+    <div class="modal hidden" id="mistakesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-times-circle"></i> Mistakes (<span id="mistakesCount">0</span>)</h3>
+                <button id="closeModalBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="mistakesListContainer"></div>
+        </div>
+    </div>
+
+    <div class="modal hidden" id="deckEditorModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="editorTitle"><i class="fas fa-edit"></i> Create New Deck</h3>
+                <button id="closeEditorBtn" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="deck-name-input">
+                    <label>Deck Name:</label>
+                    <input type="text" id="deckNameInput" placeholder="e.g., My Vocabulary, Work Terms..." class="editor-input">
+                </div>
+                
+                <div class="editor-add-form">
+                    <h4>Add New Word</h4>
+                    <div class="form-row">
+                        <input type="text" id="newEnglish" placeholder="English word" class="editor-input">
+                        <input type="text" id="newRussian" placeholder="Russian translation" class="editor-input">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="newPronunciation" placeholder="Pronunciation (e.g., /ˈeksəmpəl/)" class="editor-input">
+                        <input type="text" id="newPartOfSpeech" placeholder="Part of speech (n, v, adj...)" class="editor-input">
+                    </div>
+                    <button id="addWordBtn" class="btn-add-word">
+                        <i class="fas fa-plus"></i> Add Word
+                    </button>
+                </div>
+                
+                <div class="editor-word-list">
+                    <h4>Words in Deck (<span id="customDeckCount">0</span>)</h4>
+                    <div id="customWordsList" class="words-list"></div>
+                </div>
+                
+                <div class="editor-actions">
+                    <button id="saveDeckBtn" class="btn-save-deck">
+                        <i class="fas fa-save"></i> Save Deck
+                    </button>
+                    <button id="deleteDeckBtn" class="btn-delete-deck hidden">
+                        <i class="fas fa-trash"></i> Delete Deck
+                    </button>
+                    <button id="exportDeckBtn" class="btn-export-deck">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button id="importDeckBtn" class="btn-import-deck">
+                        <i class="fas fa-upload"></i> Import
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="words.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
